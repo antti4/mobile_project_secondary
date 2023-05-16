@@ -6,7 +6,21 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MainActivity">
-
+    <EditText
+        android:id="@+id/fName"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text" />
+    <EditText
+        android:id="@+id/lName"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text" />
+    <Button
+        android:id="@+id/PostButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add user" />
 
     <ListView
         android:id="@+id/listView"

@@ -19,6 +19,7 @@ import java.net.URL
 import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
+    val url : String = "https://dummyjson.com/users"
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     data class User(var id: Int? = null,
@@ -44,7 +45,9 @@ class MainActivity : AppCompatActivity() {
             .setOnClickListener {
                 val fname = findViewById<EditText>(R.id.fName)
                 val lname = findViewById<EditText>(R.id.lName)
-                postNewUser(fname, lname)
+                thread {
+                    postNewUser(fname.text.toString(), lname.text.toString(), url)
+                }
             }
     }
 
@@ -55,7 +58,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
     fun publishAllData(){
-        val json = getUrl("https://dummyjson.com/users"){
+        val json = getUrl(url){
             if(it != null){
                 val users : MutableList<MainActivity.User>? = outputAllInConsole(it)
                 runOnUiThread(){

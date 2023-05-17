@@ -6,42 +6,27 @@ import org.json.JSONObject
 import java.io.*
 import java.net.HttpURLConnection
 import java.net.URL
+import javax.net.ssl.HttpsURLConnection
+import com.fasterxml.jackson.module.kotlin.*
 
 
 fun postNewUser(fName : String, lName : String, url : String) {
-    val json = jsonToString(MainActivity.User(0, fName, lName)) {
-        val myUrl = URL("$url/add/")
-        println("$url/add")
         val sb = StringBuffer()
-        val url = URL("$url/add/")
-        val httpURLConnection = url.openConnection() as HttpURLConnection
-        val jsonObject = JSONObject()
-        jsonObject.put("firstName", "Jack")
-        jsonObject.put("lastName", "Danny")
+        val url = URL("$url/add")
+        val httpURLConnection = url.openConnection() as HttpsURLConnection
+        val user = "[{\"firstName\": \"$fName\", \"lastName\": \"$lName\"}]"
         httpURLConnection.requestMethod = "POST"
         httpURLConnection.setRequestProperty("Content-Type", "application/json")
         httpURLConnection.setRequestProperty("Accept", "application/json")
-        httpURLConnection.doInput = true
         httpURLConnection.doOutput = true
         try {
-            val outputStreamWriter = OutputStreamWriter(httpURLConnection.outputStream)
-            outputStreamWriter.write(jsonObject.toString())
+            val outputStreamWriter = BufferedWriter(OutputStreamWriter(httpURLConnection.outputStream, "UTF-8"))
+            outputStreamWriter.write(user)
             outputStreamWriter.flush()
-            println(httpURLConnection.responseCode)
+            println(httpURLConnection.responseMessage)
+            println(user)
         }finally {
             httpURLConnection.disconnect()
         }
-
-    }
 }
 
-fun jsonToString(user : MainActivity.User, callback : (json: String?)->Unit){
-    val mapper = ObjectMapper()
-    try {
-        val json = mapper.writeValueAsString(user)
-        println("ResultingJSONstring = $json")
-        callback(json)
-    } catch (e: JsonProcessingException) {
-        e.printStackTrace()
-    }
-}

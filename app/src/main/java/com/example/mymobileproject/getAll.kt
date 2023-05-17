@@ -10,14 +10,18 @@ import java.net.URL
         val myUrl = URL(url)
         val sb = StringBuffer()
         val urlConnection = myUrl.openConnection() as HttpURLConnection
-        val myStream = BufferedInputStream(urlConnection.inputStream)
-        val reader = BufferedReader(InputStreamReader(myStream))
-        reader.use{
-            var line :String? = null
-            do{
-                line = it.readLine()
-                sb.append(line)
-            }while(line != null)
+        try {
+            val myStream = BufferedInputStream(urlConnection.inputStream)
+            val reader = BufferedReader(InputStreamReader(myStream))
+            reader.use{
+                var line :String? = null
+                do{
+                    line = it.readLine()
+                    sb.append(line)
+                }while(line != null)
+            }
+            callback(sb.toString())
+        }finally {
+            urlConnection.disconnect()
         }
-        callback(sb.toString())
     }

@@ -25,6 +25,17 @@ fun postNewUser(fName : String, lName : String, url : String) {
             outputStreamWriter.flush()
             println(httpURLConnection.responseMessage)
             println(user)
+            val myStream = BufferedInputStream(httpURLConnection.inputStream)
+            val reader = BufferedReader(InputStreamReader(myStream))
+            reader.use{
+                var line :String? = null
+                do{
+                    line = it.readLine()
+                    sb.append(line)
+                }while(line != null)
+            }
+            println(sb)
+
         }finally {
             httpURLConnection.disconnect()
         }

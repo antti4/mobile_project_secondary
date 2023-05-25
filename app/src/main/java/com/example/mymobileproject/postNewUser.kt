@@ -8,36 +8,32 @@ import java.net.HttpURLConnection
 import java.net.URL
 import javax.net.ssl.HttpsURLConnection
 import com.fasterxml.jackson.module.kotlin.*
+import okhttp3.*
 
-
-fun postNewUser(fName : String, lName : String, url : String) {
-        val sb = StringBuffer()
-        val url = URL("$url/add")
-        val httpURLConnection = url.openConnection() as HttpsURLConnection
-        val user = "[{\"firstName\": \"$fName\", \"lastName\": \"$lName\"}]"
-        httpURLConnection.requestMethod = "POST"
-        httpURLConnection.setRequestProperty("Content-Type", "application/json")
-        httpURLConnection.setRequestProperty("Accept", "application/json")
-        httpURLConnection.doOutput = true
-        try {
-            val outputStreamWriter = BufferedWriter(OutputStreamWriter(httpURLConnection.outputStream, "UTF-8"))
-            outputStreamWriter.write(user)
-            outputStreamWriter.flush()
-            println(httpURLConnection.responseMessage)
-            println(user)
-            val myStream = BufferedInputStream(httpURLConnection.inputStream)
-            val reader = BufferedReader(InputStreamReader(myStream))
-            reader.use{
-                var line :String? = null
-                do{
-                    line = it.readLine()
-                    sb.append(line)
-                }while(line != null)
-            }
-            println(sb)
-
-        }finally {
-            httpURLConnection.disconnect()
+fun postNewUser(fName: String, lName: String, url: String){
+    var json = FormBody.Builder()
+        .add("firstName", fName)
+        .add("lastName", lName)
+        .build()
+    var client = OkHttpClient()
+    val request = Request.Builder().url("$url/add")
+        .post(json)
+        .addHeader("Content-Type", "application/json")
+        .addHeader("Accept", "application/json")
+        .build()
+    client.newCall(request).enqueue(object : Callback {
+        override fun onFailure(call: Call, e: IOException) {
+            TODO("Not implemented")
         }
-}
 
+        override fun onResponse(call: Call, response: Response) {
+            try {
+                val responseData = response.body()!!.string()
+                println(responseData)
+
+            } catch (e: Exception) {
+
+            }
+        }
+    })
+}

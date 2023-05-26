@@ -4,27 +4,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_centerHorizontal="true"
     android:orientation="vertical"
+    android:padding="15dp"
     tools:context=".MainActivity">
-    <EditText
-        android:id="@+id/fName"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:inputType="text" />
-    <EditText
-        android:id="@+id/lName"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:inputType="text" />
-    <Button
-        android:id="@+id/PostButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add user" />
 
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="540dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/fName"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:hint="user name"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/lName"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="user surname"
+            android:inputType="text" />
+
+        <Button
+            android:id="@+id/PostButton"
+            android:layout_width="123dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:text="Add user" />
+    </LinearLayout>
 
 </LinearLayout>
